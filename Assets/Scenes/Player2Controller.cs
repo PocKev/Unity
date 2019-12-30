@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Player2Controller : MonoBehaviour
 {
-    Animator anim;
+    public Animator anim;
+    public float walkSpeed;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,8 +15,12 @@ public class Player2Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float move = Input.GetAxis("Vertical");
-        Debug.Log("Move: " + move * 5);
-        anim.SetFloat("Speed", move * 5);
+        float move = Input.GetAxis("Vertical") * walkSpeed;
+
+        if (Input.GetKey(KeyCode.LeftShift)) 
+        {
+            move *= 2f; //spring multiplier
+        }
+        anim.SetFloat("Speed", move);
     }
 }
