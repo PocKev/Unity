@@ -6,6 +6,8 @@ public class Player2Controller : MonoBehaviour
 {
     public Animator anim;
     public float walkSpeed;
+
+    private float speed;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,12 +17,18 @@ public class Player2Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float move = Input.GetAxis("Vertical") * walkSpeed;
+        Vector2 movement = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        movement.Normalize();
+        movement *= walkSpeed;
 
         if (Input.GetKey(KeyCode.LeftShift)) 
         {
-            move *= 2f; //spring multiplier
+            movement *= 2f; //sprint multiplier
         }
-        anim.SetFloat("Speed", move);
+
+        speed = movement.magnitude;
+        anim.SetFloat("Speed", speed);
+        anim.SetFloat("VelocityX", movement.x);
+        anim.SetFloat("VelocityZ", movement.y);
     }
 }
