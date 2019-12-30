@@ -21,14 +21,27 @@ public class Player2Controller : MonoBehaviour
         movement.Normalize();
         movement *= walkSpeed;
 
+        float direction;
+
         if (Input.GetKey(KeyCode.LeftShift)) 
         {
             movement *= 2f; //sprint multiplier
+        }
+        if (Input.GetKey(KeyCode.N))
+        {
+            direction = -1f;
+        } else if (Input.GetKey(KeyCode.M))
+        {
+            direction = 1f;
+        } else
+        {
+            direction = 0f;
         }
 
         speed = movement.magnitude;
         anim.SetFloat("Speed", speed);
         anim.SetFloat("VelocityX", movement.x);
         anim.SetFloat("VelocityZ", movement.y);
+        anim.SetFloat("Direction", direction);
     }
 }
