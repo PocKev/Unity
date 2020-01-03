@@ -10,11 +10,15 @@ public class NavController : MonoBehaviour
     public NavMeshAgent agent;
     public ThirdPersonCharacter character;
 
-    // Update is called once per frame
+    private bool selected;
+
+    [SerializeField]
+    private LayerMask playerLayer;
     private void Start()
     {
         cam = Camera.main;
         agent.updateRotation = false;
+        selected = false;
     }
     void Update()
     {
@@ -26,9 +30,20 @@ public class NavController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                agent.SetDestination(hit.point);
+                if (selected)
+                {
+                    agent.SetDestination(hit.point);
+                    selected = false;
+                    Debug.Log("MOVE " + gameObject.name);
+                }
             }
-            Debug.Log(hit.point);
+            
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerLayer) && hit.collider.gameObject.name == gameObject.name)
+            { //if the ray is hitting an object on player layer and if the collider is this game object
+                selected = true;
+                Debug.Log("SELECTED " + gameObject.name);
+            }
+            //Debug.Log(hit.point);
         }
 
         if (agent.remainingDistance > agent.stoppingDistance)
